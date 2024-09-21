@@ -86,20 +86,31 @@ def plot_value_creation_by_industry(df, save_directory):
     if "value_creation" not in df.columns:
         raise ValueError("The DataFrame does not contain a 'value_creation' column.")
 
+    # Ensure the 'value_creation' column is of the correct type
+    df = df.with_columns(
+        pl.col("value_creation").cast(pl.Float64).alias("value_creation")
+    )
+
     industries = df["Industry"].to_list()
     value_creation = df["value_creation"].to_list()
 
     # Create a new DataFrame for plotting
     plot_df = pl.DataFrame({"Industry": industries, "Value Creation": value_creation})
 
+    # Ensure Value Creation is numeric
+    plot_df = plot_df.with_columns(
+        pl.col("Value Creation").cast(pl.Float64).alias("Value Creation")
+    )
+
     # Create the boxplot
     plt.figure(figsize=(12, 6))
     sns.boxplot(
-        x=plot_df["Industry"].to_list(),
-        y=plot_df["Value Creation"].to_list(),
-        hue=plot_df["Industry"].to_list(),  # Set hue to the Industry column
+        data=plot_df.to_pandas(),  # Convert to pandas for seaborn
+        x="Industry",
+        y="Value Creation",
+        hue="Industry",
         palette="Spectral",
-        legend=False,  # Set legend to False
+        legend=False,
     )
     plt.title("Value Creation by Industry")
     plt.xlabel("Industry")
