@@ -9,7 +9,7 @@ from lib import (
     plot_value_creation_by_industry,
 )
 
-## Path for the dataset
+# Path for the dataset
 DATASET_PATH = (
     r"C:/Users/chris/Downloads/IDS706/"
     r"chris_moreira_polars_mini/test_data/unicorn_companies.csv"
@@ -52,6 +52,10 @@ def test_std():
 def test_plot():
     df_raw = dataset_import(DATASET_PATH)
     df_edited = data_modeling(df_raw)
+
+    # Ensure value_creation is numeric
+    df_edited = df_edited.with_columns(pl.col("value_creation").cast(pl.Float64))
+
     save_dir = r"C:/Users/chris/Downloads/IDS706/chris_moriera_valuecreation_pandas/"
     plot_value_creation_by_industry(df_edited, save_dir)
     assert os.path.exists(os.path.join(save_dir, "value_creation_boxplot.png"))

@@ -5,11 +5,11 @@ from main import main
 
 
 def test_main_plot():
-    # Sample Polars DataFrame
+    # Sample Polars DataFrame with numeric values
     df_sample = pl.DataFrame(
         {
-            "Valuation": ["$1B", "$2B", "$500M", "$1.5B"],
-            "Funding": ["$500M", "$1B", "$250M", "$750M"],
+            "Valuation": [1.0, 2.0, 0.5, 1.5],  # Use floats instead of strings
+            "Funding": [0.5, 1.0, 0.25, 0.75],  # Use floats instead of strings
             "Industry": ["Tech", "Health", "Finance", "Tech"],
         }
     )
