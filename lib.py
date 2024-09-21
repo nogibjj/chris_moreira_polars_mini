@@ -83,38 +83,33 @@ def calculate_std_value_creation(df_edited):
 
 
 def plot_value_creation_by_industry(df, save_directory):
-    # Check if value_creation is in the expected format, if not, create it
     if "value_creation" not in df.columns:
         raise ValueError("The DataFrame does not contain a 'value_creation' column.")
 
-    # Extract industries and value creation directly
     industries = df["Industry"].to_list()
     value_creation = df["value_creation"].to_list()
 
     # Create a new DataFrame for plotting
-    plot_df = pl.DataFrame(
-        {"Industry": industries, "Value Creation": value_creation}
-    ).to_pandas()  # Convert to pandas for Seaborn compatibility
+    plot_df = pl.DataFrame({"Industry": industries, "Value Creation": value_creation})
 
     # Create the boxplot
-    plt.figure(figsize=(12, 6))  # Optional: Adjust figure size for better visualization
+    plt.figure(figsize=(12, 6))
     sns.boxplot(
-        x="Industry",
-        y="Value Creation",
-        data=plot_df,
+        x=plot_df["Industry"].to_list(),
+        y=plot_df["Value Creation"].to_list(),
+        hue=plot_df["Industry"].to_list(),  # Set hue to the Industry column
         palette="Spectral",
-        hue="Industry",
-        legend=False,
+        legend=False,  # Set legend to False
     )
     plt.title("Value Creation by Industry")
     plt.xlabel("Industry")
     plt.ylabel("Value Creation (in billions)")
-    plt.xticks(rotation=45)  # Rotate x labels for better readability
-    plt.tight_layout()  # Adjust layout to prevent clipping
+    plt.xticks(rotation=45)
+    plt.tight_layout()
 
     # Save the plot
     plt.savefig(os.path.join(save_directory, "value_creation_boxplot.png"))
-    plt.close()  # Close the plot to free memory
+    plt.close()
 
 
 # Call the functions to load and process the data

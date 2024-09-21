@@ -7,7 +7,7 @@ pylint==2.15.3
 boto3==1.24.87
 nbqa==1.7.0
 nbval==0.10.0
-
+pyarrow==17.0.0
 # Data Science dependencies
 # pandas==1.5.0
 numpy==1.23.0
