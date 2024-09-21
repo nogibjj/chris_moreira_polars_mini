@@ -1,12 +1,12 @@
-import pandas as pd
+import polars as pl
 import os
 from unittest import mock
 from main import main
 
 
 def test_main_plot():
-    # Sample DataFrame
-    df_sample = pd.DataFrame(
+    # Sample Polars DataFrame
+    df_sample = pl.DataFrame(
         {
             "Valuation": ["$1B", "$2B", "$500M", "$1.5B"],
             "Funding": ["$500M", "$1B", "$250M", "$750M"],
