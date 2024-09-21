@@ -82,32 +82,39 @@ def calculate_std_value_creation(df_edited):
     return df_edited["value_creation"].std()
 
 
-def plot_value_creation_by_industry(df_edited, save_dir):
-    plt.figure(figsize=(12, 8))
+def plot_value_creation_by_industry(df, save_directory):
+    # Check if value_creation is in the expected format, if not, create it
+    if "value_creation" not in df.columns:
+        raise ValueError("The DataFrame does not contain a 'value_creation' column.")
 
-    industries = df_edited["Industry"].to_list()
-    value_creation = df_edited["value_creation"].to_list()
+    # Extract industries and value creation directly
+    industries = df["Industry"].to_list()
+    value_creation = df["value_creation"].to_list()
 
-    # Create a boxplot with hue set to industries
-    sns.boxplot(hue=industries, y=value_creation, palette="Spectral", legend=False)
+    # Create a new DataFrame for plotting
+    plot_df = pl.DataFrame(
+        {"Industry": industries, "Value Creation": value_creation}
+    ).to_pandas()  # Convert to pandas for Seaborn compatibility
 
-    plt.title("Value Creation Variability per Industry", fontsize=16, fontweight="bold")
-    plt.xlabel("Industry", fontsize=14)
-    plt.ylabel("Value Creation (in Billions)", fontsize=14)
+    # Create the boxplot
+    plt.figure(figsize=(12, 6))  # Optional: Adjust figure size for better visualization
+    sns.boxplot(
+        x="Industry",
+        y="Value Creation",
+        data=plot_df,
+        palette="Spectral",
+        hue="Industry",
+        legend=False,
+    )
+    plt.title("Value Creation by Industry")
+    plt.xlabel("Industry")
+    plt.ylabel("Value Creation (in billions)")
+    plt.xticks(rotation=45)  # Rotate x labels for better readability
+    plt.tight_layout()  # Adjust layout to prevent clipping
 
-    plt.xticks(rotation=45, ha="right")
-    plt.grid(True, axis="y", linestyle="--", alpha=0.7)
-
-    plt.tight_layout()
-
-    if not os.path.exists(save_dir):
-        os.makedirs(save_dir)
-
-    plot_path = os.path.join(save_dir, "value_creation_boxplot.png")
-    plt.savefig(plot_path)
-    plt.show()
-
-    print(f"Plot saved to: {plot_path}")
+    # Save the plot
+    plt.savefig(os.path.join(save_directory, "value_creation_boxplot.png"))
+    plt.close()  # Close the plot to free memory
 
 
 # Call the functions to load and process the data
