@@ -9,8 +9,11 @@ from lib import (
     plot_value_creation_by_industry,
 )
 
-# Path for the dataset
-DATASET_PATH = r"C:/Users/chris/Downloads/IDS706/chris_moreira_polars_mini/test_data/unicorn_companies.csv"
+## Path for the dataset
+DATASET_PATH = (
+    r"C:/Users/chris/Downloads/IDS706/"
+    r"chris_moreira_polars_mini/test_data/unicorn_companies.csv"
+)
 
 
 def test_import():
