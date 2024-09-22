@@ -1,7 +1,6 @@
 import pytest
 from lib import (
     dataset_import,
-    data_modeling,
     calculate_mean,
     calculate_median_value_creation,
     calculate_std_value_creation,
