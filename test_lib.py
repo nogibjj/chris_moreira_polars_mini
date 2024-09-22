@@ -1,6 +1,5 @@
 import os
 import polars as pl
-from unittest import mock
 from lib import (
     dataset_import,
     data_modeling,
@@ -10,7 +9,6 @@ from lib import (
     plot_value_creation_by_industry,
 )
 
-# Path for the dataset
 DATASET_PATH = (
     r"C:/Users/chris/Downloads/IDS706/"
     r"chris_moreira_polars_mini/test_data/unicorn_companies.csv"
@@ -54,13 +52,11 @@ def test_plot():
     df_raw = dataset_import(DATASET_PATH)
     df_edited = data_modeling(df_raw)
 
-    # Ensure value_creation is numeric
     df_edited = df_edited.with_columns(pl.col("value_creation").cast(pl.Float64))
 
     save_dir = r"C:/Users/chris/Downloads/IDS706/chris_moriera_valuecreation_pandas/"
     plot_value_creation_by_industry(df_edited, save_dir)
 
-    # Check if the plot was saved correctly
     assert os.path.exists(
         os.path.join(save_dir, "value_creation_boxplot.png")
     ), "Plot file was not saved"

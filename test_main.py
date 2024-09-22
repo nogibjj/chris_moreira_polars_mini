@@ -1,12 +1,17 @@
 import polars as pl
 import os
+import sys
 from unittest import mock, TestCase
-from main import main
+
+# Ensure the directory is in the Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# Import the main function from main.py
+from main import main  # Import only the main function
 
 
 class TestMain(TestCase):
     def test_main_plot(self):
-        # Sample Polars DataFrame with numeric values
         df_sample = pl.DataFrame(
             {
                 "Valuation": [1.0, 2.0, 0.5, 1.5],
@@ -15,26 +20,22 @@ class TestMain(TestCase):
             }
         )
 
-        # Mock dataset import and data modeling
+        # Mock dataset import and data modeling from the 'lib' module
         with mock.patch("lib.dataset_import", return_value=df_sample), mock.patch(
             "lib.data_modeling", return_value=df_sample
         ), mock.patch(
-            "main.plot_value_creation_by_industry"
-        ) as mock_plot:  # Corrected patch path to 'main'
+            "main.plot_value_creation_by_industry"  # Mocking plot function
+        ) as mock_plot:
 
-            # Mock the print function to capture output
             with mock.patch("builtins.print") as mock_print:
-                main()  # Call the main function
+                main()  # Directly call the imported main function
+
                 print("Main function executed.")
-
-                # Check if the plot function was called
                 print(f"Plot function called {mock_plot.call_count} times.")
-                mock_plot.assert_called_once()  # Ensure the plot function was called
+                mock_plot.assert_called_once()
 
-                # Capture the print outputs
                 print_outputs = [call[0][0] for call in mock_print.call_args_list]
 
-                # Check if each statistic (std, mean, median) exists and is a number
                 for line in print_outputs:
                     if "Standard Deviation" in line:
                         std_value = line.split(":")[-1].strip()
@@ -52,7 +53,6 @@ class TestMain(TestCase):
                             ".", "", 1
                         ).isdigit(), "Median not a valid number"
 
-                # Check if the plot was saved to the expected path
                 expected_save_dir = r"C:/Users/chris/Downloads/IDS706/chris_moriera_valuecreation_pandas/"
                 assert os.path.exists(
                     expected_save_dir
