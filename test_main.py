@@ -53,7 +53,10 @@ class TestMain(TestCase):
                             ".", "", 1
                         ).isdigit(), "Median not a valid number"
 
-                expected_save_dir = r"C:/Users/chris/Downloads/IDS706/chris_moriera_valuecreation_pandas/"
+                expected_save_dir = (
+                    r"C:/Users/chris/Downloads/IDS706/"
+                    r"chris_moriera_valuecreation_pandas/"
+                )  # Split long line to fix E501
                 assert os.path.exists(
                     expected_save_dir
                 ), "Plot save directory does not exist"

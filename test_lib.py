@@ -54,7 +54,8 @@ def test_plot():
 
     df_edited = df_edited.with_columns(pl.col("value_creation").cast(pl.Float64))
 
-    save_dir = r"C:/Users/chris/Downloads/IDS706/chris_moriera_valuecreation_pandas/"
+    save_dir = r"C:/Users/chris/Downloads/IDS706/"
+    r"chris_moriera_valuecreation_pandas/"
     plot_value_creation_by_industry(df_edited, save_dir)
 
     assert os.path.exists(
