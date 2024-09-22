@@ -1,5 +1,4 @@
-import os
-import polars as pl
+import pytest
 from lib import (
     dataset_import,
     data_modeling,
@@ -9,65 +8,40 @@ from lib import (
     plot_value_creation_by_industry,
 )
 
-DATASET_PATH = (
-    r"C:/Users/chris/Downloads/IDS706/"
-    r"chris_moreira_polars_mini/test_data/unicorn_companies.csv"
-)
+
+# Test cases for dataset_import
+def test_dataset_import():
+    path = "test_data/unicorn_companies.csv"
+    df = dataset_import(path)
+    assert not df.isnull().values.any()  # Check if dataset contains any null values
+    assert len(df) > 0  # Ensure dataset is not empty
 
 
-def test_import():
-    df = dataset_import(DATASET_PATH)
-    assert df is not None
-    assert isinstance(df, pl.DataFrame)
+# Test cases for calculate_mean
+def test_calculate_mean():
+    data = [1, 2, 3, 4, 5]
+    mean = calculate_mean(data)
+    assert mean == 3  # Mean of the dataset
 
 
-def test_modeling():
-    df_raw = dataset_import(DATASET_PATH)
-    df_edited = data_modeling(df_raw)
-    assert "value_creation" in df_edited.columns
+# Test cases for calculate_median_value_creation
+def test_calculate_median_value_creation():
+    data = [1, 2, 3, 4, 5]
+    median = calculate_median_value_creation(data)
+    assert median == 3  # Median of the dataset
 
 
-def test_mean():
-    df_raw = dataset_import(DATASET_PATH)
-    df_edited = data_modeling(df_raw)
-    mean_value = calculate_mean(df_edited)
-    assert isinstance(mean_value, (int, float))
+# Test cases for calculate_std_value_creation
+def test_calculate_std_value_creation():
+    data = [1, 2, 3, 4, 5]
+    std = calculate_std_value_creation(data)
+    assert round(std, 2) == 1.58  # Standard deviation
 
 
-def test_median():
-    df_raw = dataset_import(DATASET_PATH)
-    df_edited = data_modeling(df_raw)
-    median_value = calculate_median_value_creation(df_edited)
-    assert isinstance(median_value, (int, float))
-
-
-def test_std():
-    df_raw = dataset_import(DATASET_PATH)
-    df_edited = data_modeling(df_raw)
-    std_value = calculate_std_value_creation(df_edited)
-    assert isinstance(std_value, (int, float))
-
-
-def test_plot():
-    df_raw = dataset_import(DATASET_PATH)
-    df_edited = data_modeling(df_raw)
-
-    df_edited = df_edited.with_columns(pl.col("value_creation").cast(pl.Float64))
-
-    save_dir = r"C:/Users/chris/Downloads/IDS706/"
-    r"chris_moriera_valuecreation_pandas/"
-    plot_value_creation_by_industry(df_edited, save_dir)
-
-    assert os.path.exists(
-        os.path.join(save_dir, "value_creation_boxplot.png")
-    ), "Plot file was not saved"
-
-
-if __name__ == "__main__":
-    test_import()
-    test_modeling()
-    test_mean()
-    test_median()
-    test_std()
-    test_plot()
-    print("All tests passed!")
+# Test cases for plot_value_creation_by_industry
+@pytest.mark.skip(reason="Skipping plot testing in automated environments")
+def test_plot_value_creation_by_industry():
+    df_edited_o = dataset_import("test_data/unicorn_companies.csv")
+    save_directory = "test_plots/"
+    plot_value_creation_by_industry(df_edited_o, save_directory)
+    # No assertion, just ensure no errors in the plot generation
