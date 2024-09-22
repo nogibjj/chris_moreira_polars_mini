@@ -1,58 +1,63 @@
 import polars as pl
 import os
-from unittest import mock
+from unittest import mock, TestCase
 from main import main
 
 
-def test_main_plot():
-    # Sample Polars DataFrame with numeric values
-    df_sample = pl.DataFrame(
-        {
-            "Valuation": [1.0, 2.0, 0.5, 1.5],  # Use floats instead of strings
-            "Funding": [0.5, 1.0, 0.25, 0.75],  # Use floats instead of strings
-            "Industry": ["Tech", "Health", "Finance", "Tech"],
-        }
-    )
+class TestMain(TestCase):
+    def test_main_plot(self):
+        # Sample Polars DataFrame with numeric values
+        df_sample = pl.DataFrame(
+            {
+                "Valuation": [1.0, 2.0, 0.5, 1.5],
+                "Funding": [0.5, 1.0, 0.25, 0.75],
+                "Industry": ["Tech", "Health", "Finance", "Tech"],
+            }
+        )
 
-    # Mock dataset import and data modeling
-    with mock.patch("lib.dataset_import", return_value=df_sample), mock.patch(
-        "lib.data_modeling", return_value=df_sample
-    ), mock.patch("main.plot_value_creation_by_industry") as mock_plot:
+        # Mock dataset import and data modeling
+        with mock.patch("lib.dataset_import", return_value=df_sample), mock.patch(
+            "lib.data_modeling", return_value=df_sample
+        ), mock.patch(
+            "main.plot_value_creation_by_industry"
+        ) as mock_plot:  # Corrected patch path to 'main'
 
-        # Mock the print function to capture output
-        with mock.patch("builtins.print") as mock_print:
-            main()  # Call the main function
-            mock_plot.assert_called_once()  # Ensure the plot function was called
+            # Mock the print function to capture output
+            with mock.patch("builtins.print") as mock_print:
+                main()  # Call the main function
+                print("Main function executed.")
 
-            # Capture the print outputs
-            print_outputs = [call[0][0] for call in mock_print.call_args_list]
+                # Check if the plot function was called
+                print(f"Plot function called {mock_plot.call_count} times.")
+                mock_plot.assert_called_once()  # Ensure the plot function was called
 
-            # Check if each statistic (std, mean, median) exists and is a number
-            for line in print_outputs:
-                if "Standard Deviation" in line:
-                    std_value = line.split(":")[-1].strip()
-                    assert std_value.replace(
-                        ".", "", 1
-                    ).isdigit(), "Standard deviation not a valid number"
-                elif "Mean" in line:
-                    mean_value = line.split(":")[-1].strip()
-                    assert mean_value.replace(
-                        ".", "", 1
-                    ).isdigit(), "Mean not a valid number"
-                elif "Median" in line:
-                    median_value = line.split(":")[-1].strip()
-                    assert median_value.replace(
-                        ".", "", 1
-                    ).isdigit(), "Median not a valid number"
+                # Capture the print outputs
+                print_outputs = [call[0][0] for call in mock_print.call_args_list]
 
-            # Check if the plot was saved to the expected path
-            expected_save_dir = (
-                r"C:/Users/chris/Downloads/IDS706/chris_moriera_valuecreation_pandas/"
-            )
-            assert os.path.exists(
-                expected_save_dir
-            ), "Plot save directory does not exist"
+                # Check if each statistic (std, mean, median) exists and is a number
+                for line in print_outputs:
+                    if "Standard Deviation" in line:
+                        std_value = line.split(":")[-1].strip()
+                        assert std_value.replace(
+                            ".", "", 1
+                        ).isdigit(), "Standard deviation not a valid number"
+                    elif "Mean" in line:
+                        mean_value = line.split(":")[-1].strip()
+                        assert mean_value.replace(
+                            ".", "", 1
+                        ).isdigit(), "Mean not a valid number"
+                    elif "Median" in line:
+                        median_value = line.split(":")[-1].strip()
+                        assert median_value.replace(
+                            ".", "", 1
+                        ).isdigit(), "Median not a valid number"
+
+                # Check if the plot was saved to the expected path
+                expected_save_dir = r"C:/Users/chris/Downloads/IDS706/chris_moriera_valuecreation_pandas/"
+                assert os.path.exists(
+                    expected_save_dir
+                ), "Plot save directory does not exist"
 
 
 if __name__ == "__main__":
-    test_main_plot()
+    TestMain().test_main_plot()

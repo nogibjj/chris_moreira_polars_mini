@@ -1,5 +1,6 @@
 import os
 import polars as pl
+from unittest import mock
 from lib import (
     dataset_import,
     data_modeling,
@@ -58,7 +59,11 @@ def test_plot():
 
     save_dir = r"C:/Users/chris/Downloads/IDS706/chris_moriera_valuecreation_pandas/"
     plot_value_creation_by_industry(df_edited, save_dir)
-    assert os.path.exists(os.path.join(save_dir, "value_creation_boxplot.png"))
+
+    # Check if the plot was saved correctly
+    assert os.path.exists(
+        os.path.join(save_dir, "value_creation_boxplot.png")
+    ), "Plot file was not saved"
 
 
 if __name__ == "__main__":
