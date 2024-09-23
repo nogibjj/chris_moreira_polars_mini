@@ -96,8 +96,8 @@ def plot_value_creation_by_industry(df, save_directory):
         x="Industry",
         y="value_creation",
         data=df_pandas,
-        hue="Industry",
         palette="coolwarm",
+        hue="Industry",
         legend=False,
     )
 
