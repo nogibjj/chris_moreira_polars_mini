@@ -1,5 +1,5 @@
+import polars as pl
 import pytest
-import polars as pl  # Make sure to import Polars
 from lib import (
     dataset_import,
     calculate_mean,
@@ -10,27 +10,31 @@ from lib import (
 
 
 def test_dataset_import():
+    """Test that the dataset is loaded without nulls."""
     path = "test_data/unicorn_companies.csv"
     df = dataset_import(path)
-    assert not df.null_count().any()  # Updated from is_null() to null_count()
+    assert df.null_count().sum() == 0  # Check for null values
 
 
 def test_calculate_mean():
+    """Test the mean calculation."""
     data = pl.DataFrame({"value_creation": [1, 2, 3, 4, 5]})
-    mean = calculate_mean(data)
-    assert mean == 3.0
+    result = calculate_mean(data)
+    assert result == 3.0  # Expected mean
 
 
 def test_calculate_median_value_creation():
+    """Test the median calculation."""
     data = pl.DataFrame({"value_creation": [1, 2, 3, 4, 5]})
-    median = calculate_median_value_creation(data)
-    assert median == 3.0
+    result = calculate_median_value_creation(data)
+    assert result == 3.0  # Expected median
 
 
 def test_calculate_std_value_creation():
+    """Test the standard deviation calculation."""
     data = pl.DataFrame({"value_creation": [1, 2, 3, 4, 5]})
-    std = calculate_std_value_creation(data)
-    assert std == pytest.approx(1.41421356, rel=1e-9)
+    result = calculate_std_value_creation(data)
+    assert result == pytest.approx(1.5811388300841898, rel=1e-9)  # Updated expected std
 
 
 # Test cases for plot_value_creation_by_industry

@@ -11,7 +11,8 @@ from lib import (
 
 def main():
     # Load the dataset
-    df_raw = dataset_import()
+    path = "test_data/unicorn_companies.csv"  # Ensure this path is correct
+    df_raw = dataset_import(path)  # Pass the path as an argument
 
     # Model the data
     df_edited = data_modeling(df_raw)

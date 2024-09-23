@@ -1,18 +1,17 @@
 import polars as pl
-import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
 
 def dataset_import(path):
-    # Import the dataset using Polars
-    df = pl.read_csv(path)
-    return df
+    """Load dataset from a CSV file."""
+    return pl.read_csv(path)
 
 
-def data_modeling(df_raw):
-    df_edited = df_raw.drop_nulls(subset=["Valuation", "Funding"])
+def data_modeling(df):
+    """Modeling the dataset by cleaning and calculating 'value_creation'."""
+    df_edited = df.drop_nulls(subset=["Valuation", "Funding"])
 
     # Clean up the dollar sign and extract unit
     df_edited = df_edited.with_columns(
@@ -69,18 +68,22 @@ def data_modeling(df_raw):
 
 
 def calculate_mean(df_edited):
+    """Calculate the mean of the 'value_creation' column."""
     return df_edited.select(pl.col("value_creation").mean()).to_numpy()[0][0]
 
 
 def calculate_median_value_creation(df_edited):
+    """Calculate the median of the 'value_creation' column."""
     return df_edited.select(pl.col("value_creation").median()).to_numpy()[0][0]
 
 
 def calculate_std_value_creation(df_edited):
+    """Calculate the standard deviation of the 'value_creation' column."""
     return df_edited.select(pl.col("value_creation").std()).to_numpy()[0][0]
 
 
 def plot_value_creation_by_industry(df, save_directory):
+    """Plot value creation by industry and save the plot."""
     if not os.path.exists(save_directory):
         os.makedirs(save_directory)
 
