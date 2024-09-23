@@ -92,6 +92,7 @@ def plot_value_creation_by_industry(df, save_directory):
 
     plt.figure(figsize=(10, 6))
     sns.boxplot(x="Industry", y="value_creation", data=df_pandas, palette="coolwarm")
+    plt.ylim(0, 50)
     plt.xticks(rotation=45, ha="right")
     plt.title("Value Creation by Industry")
     plt.tight_layout()
