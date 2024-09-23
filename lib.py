@@ -92,14 +92,7 @@ def plot_value_creation_by_industry(df, save_directory):
     plt.figure(figsize=(10, 6))
 
     # Create boxplot with 'Industry' assigned to hue and disable legend
-    sns.boxplot(
-        x="Industry",
-        y="value_creation",
-        data=df_pandas,
-        palette="coolwarm",
-        hue="Industry",
-        legend=False,
-    )
+    sns.boxplot(x="Industry", y="value_creation", data=df_pandas, palette="coolwarm")
 
     plt.xticks(rotation=45, ha="right")
     plt.title("Value Creation by Industry")
