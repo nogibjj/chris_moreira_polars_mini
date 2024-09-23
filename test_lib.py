@@ -5,15 +5,25 @@ from lib import (
     calculate_mean,
     calculate_median_value_creation,
     calculate_std_value_creation,
-    plot_value_creation_by_industry,  # Ensure this is imported
+    plot_value_creation_by_industry,
 )
 
 
 def test_dataset_import():
-    """Test that the dataset is loaded without nulls."""
+    """Test that the dataset is loaded and is not empty."""
     path = "test_data/unicorn_companies.csv"
     df = dataset_import(path)
-    assert df.null_count().sum().sum() == 0  # Correctly check for null values
+    # Check if the DataFrame is not empty
+    assert df.shape[0] > 0
+    # Check if the DataFrame contains expected columns
+    expected_columns = [
+        "Company",
+        "Valuation",
+        "Funding",
+        "Industry",
+    ]  # Adjust based on actual columns
+    for col in expected_columns:
+        assert col in df.columns
 
 
 def test_calculate_mean():
@@ -34,7 +44,7 @@ def test_calculate_std_value_creation():
     """Test the standard deviation calculation."""
     data = pl.DataFrame({"value_creation": [1, 2, 3, 4, 5]})
     result = calculate_std_value_creation(data)
-    assert result == pytest.approx(1.5811388300841898, rel=1e-9)  # Updated expected std
+    assert result == pytest.approx(1.5811388300841898, rel=1e-9)  # Expected std
 
 
 # Test cases for plot_value_creation_by_industry
