@@ -7,20 +7,11 @@ LINT BADGE: [![Lint](https://github.com/nogibjj/chris_moreira_individual_1/actio
 TEST BADGE: [![Test](https://github.com/nogibjj/chris_moreira_individual_1/actions/workflows/test.yml/badge.svg)](https://github.com/nogibjj/chris_moreira_individual_1/actions/workflows/test.yml)
 
 # PROJECT DESCRIPTION
-The project structure must include the following files:
-Jupyter Notebook with: 
-- Cells that perform descriptive statistics using Polars or Panda.
-- Tested by using nbval plugin for pytest
-
-Makefile with the following:
-- Run all tests (must test notebook and script and lib)
-- Formats code with Python blackLinks to an external site.
-- Lints code with RuffLinks to an external site.
-- Installs code via:  pip install -r requirements.txt
-- test_script.py to test script
-- test_lib.py to test library
-- Pinned requirements.txt
-- Gitlab Actions performs all four Makefile commands with badges for each one in the README.md
+Requirements
+- Python script using Polars for descriptive statistics
+- Read a dataset (CSV or Excel)
+- Generate summary statistics (mean, median, standard deviation)
+- Create at least one data visualization
 
 # Brief Description of Dataset
 
