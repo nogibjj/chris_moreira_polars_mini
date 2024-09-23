@@ -1,4 +1,5 @@
 import pytest
+import polars as pl  # Make sure to import Polars
 from lib import (
     dataset_import,
     calculate_mean,
@@ -11,7 +12,7 @@ from lib import (
 def test_dataset_import():
     path = "test_data/unicorn_companies.csv"
     df = dataset_import(path)
-    assert not df.is_null().any()
+    assert not df.null_count().any()  # Updated from is_null() to null_count()
 
 
 def test_calculate_mean():

@@ -69,17 +69,14 @@ def data_modeling(df_raw):
 
 
 def calculate_mean(df_edited):
-    # Ensure df_edited is a Polars DataFrame and calculate the mean
     return df_edited.select(pl.col("value_creation").mean()).to_numpy()[0][0]
 
 
 def calculate_median_value_creation(df_edited):
-    # Calculate the median value creation
     return df_edited.select(pl.col("value_creation").median()).to_numpy()[0][0]
 
 
 def calculate_std_value_creation(df_edited):
-    # Calculate the standard deviation of value creation
     return df_edited.select(pl.col("value_creation").std()).to_numpy()[0][0]
 
 
@@ -91,9 +88,7 @@ def plot_value_creation_by_industry(df, save_directory):
     df_pandas = df.to_pandas()
 
     plt.figure(figsize=(10, 6))
-    # Create boxplot with 'Industry' assigned to hue and disable legend
     sns.boxplot(x="Industry", y="value_creation", data=df_pandas, palette="coolwarm")
-
     plt.xticks(rotation=45, ha="right")
     plt.title("Value Creation by Industry")
     plt.tight_layout()
