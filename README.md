@@ -6,6 +6,8 @@ INSTALL BADGE: [![Install](https://github.com/nogibjj/chris_moreira_polars_mini/
 LINT BADGE: [![Lint](https://github.com/nogibjj/chris_moreira_polars_mini/actions/workflows/lint.yml/badge.svg)](https://github.com/nogibjj/chris_moreira_polars_mini/actions/workflows/lint.yml)
 TEST BADGE: [![Test](https://github.com/nogibjj/chris_moreira_polars_mini/actions/workflows/test.yml/badge.svg)](https://github.com/nogibjj/chris_moreira_polars_mini/actions/workflows/test.yml)
 
+# Video Link
+https://youtu.be/bWGH4p-vGUg
 
 # PROJECT DESCRIPTION
 Requirements
