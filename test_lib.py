@@ -8,33 +8,28 @@ from lib import (
 )
 
 
-# Test cases for dataset_import
 def test_dataset_import():
     path = "test_data/unicorn_companies.csv"
     df = dataset_import(path)
-    assert not df.isnull().values.any()
-    assert len(df) > 0  # Ensure dataset is not empty
+    assert not df.is_null().any()
 
 
-# Test cases for calculate_mean
 def test_calculate_mean():
-    data = [1, 2, 3, 4, 5]
+    data = pl.DataFrame({"value_creation": [1, 2, 3, 4, 5]})
     mean = calculate_mean(data)
-    assert mean == 3  # Mean of the dataset
+    assert mean == 3.0
 
 
-# Test cases for calculate_median_value_creation
 def test_calculate_median_value_creation():
-    data = [1, 2, 3, 4, 5]
+    data = pl.DataFrame({"value_creation": [1, 2, 3, 4, 5]})
     median = calculate_median_value_creation(data)
-    assert median == 3  # Median of the dataset
+    assert median == 3.0
 
 
-# Test cases for calculate_std_value_creation
 def test_calculate_std_value_creation():
-    data = [1, 2, 3, 4, 5]
+    data = pl.DataFrame({"value_creation": [1, 2, 3, 4, 5]})
     std = calculate_std_value_creation(data)
-    assert round(std, 2) == 1.58  # Standard deviation
+    assert std == pytest.approx(1.41421356, rel=1e-9)
 
 
 # Test cases for plot_value_creation_by_industry

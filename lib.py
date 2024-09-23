@@ -5,12 +5,10 @@ import seaborn as sns
 import os
 
 
-def dataset_import(file_path=None):
-    if file_path is None:
-        base_path = os.getcwd()  # Get current working directory
-        file_path = os.path.join(base_path, "test_data", "unicorn_companies.csv")
-    df_raw = pl.read_csv(file_path)
-    return df_raw
+def dataset_import(path):
+    # Import the dataset using Polars
+    df = pl.read_csv(path)
+    return df
 
 
 def data_modeling(df_raw):
@@ -71,15 +69,18 @@ def data_modeling(df_raw):
 
 
 def calculate_mean(df_edited):
-    return df_edited["value_creation"].mean()
+    # Ensure df_edited is a Polars DataFrame and calculate the mean
+    return df_edited.select(pl.col("value_creation").mean()).to_numpy()[0][0]
 
 
 def calculate_median_value_creation(df_edited):
-    return df_edited["value_creation"].median()
+    # Calculate the median value creation
+    return df_edited.select(pl.col("value_creation").median()).to_numpy()[0][0]
 
 
 def calculate_std_value_creation(df_edited):
-    return df_edited["value_creation"].std()
+    # Calculate the standard deviation of value creation
+    return df_edited.select(pl.col("value_creation").std()).to_numpy()[0][0]
 
 
 def plot_value_creation_by_industry(df, save_directory):
@@ -90,23 +91,23 @@ def plot_value_creation_by_industry(df, save_directory):
     df_pandas = df.to_pandas()
 
     plt.figure(figsize=(10, 6))
-
     # Create boxplot with 'Industry' assigned to hue and disable legend
     sns.boxplot(x="Industry", y="value_creation", data=df_pandas, palette="coolwarm")
 
     plt.xticks(rotation=45, ha="right")
     plt.title("Value Creation by Industry")
-
     plt.tight_layout()
     plt.show()
+
     # Save the plot
     file_path = os.path.join(save_directory, "value_creation_by_industry.png")
     plt.savefig(file_path)
     plt.close()
 
 
-# Call the functions to load and process the data
-df_raw_o = dataset_import()
+# Specify the path to the CSV file
+csv_path = "test_data/unicorn_companies.csv"  # Update this path as needed
+df_raw_o = dataset_import(csv_path)
 df_edited_o = data_modeling(df_raw_o)
 
 # Calculate and print statistics
