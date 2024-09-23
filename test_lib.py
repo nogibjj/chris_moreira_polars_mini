@@ -12,7 +12,7 @@ from lib import (
 def test_dataset_import():
     path = "test_data/unicorn_companies.csv"
     df = dataset_import(path)
-    assert not df.isnull().values.any()  # Check if dataset contains any null values
+    assert not df.isnull().values.any()
     assert len(df) > 0  # Ensure dataset is not empty
 
 

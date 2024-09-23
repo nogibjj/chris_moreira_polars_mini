@@ -83,67 +83,33 @@ def calculate_std_value_creation(df_edited):
 
 
 def plot_value_creation_by_industry(df, save_directory):
-    if "value_creation" not in df.columns:
-        raise ValueError("The DataFrame does not contain a 'value_creation' column.")
+    if not os.path.exists(save_directory):
+        os.makedirs(save_directory)
 
-    # Ensure the 'value_creation' column is of the correct type
-    df = df.with_columns(
-        pl.col("value_creation").cast(pl.Float64).alias("value_creation")
-    )
+    # Convert Polars DataFrame to Pandas DataFrame for Seaborn plotting
+    df_pandas = df.to_pandas()
 
-    industries = df["Industry"].to_list()
-    value_creation = df["value_creation"].to_list()
+    plt.figure(figsize=(10, 6))
 
-    # Create a new DataFrame for plotting
-    plot_df = pl.DataFrame({"Industry": industries, "Value Creation": value_creation})
-
-    # Ensure Value Creation is numeric
-    plot_df = plot_df.with_columns(
-        pl.col("Value Creation").cast(pl.Float64).alias("Value Creation")
-    )
-
-
-def plot_value_creation_by_industry(df, save_directory):
-    if "value_creation" not in df.columns:
-        raise ValueError("The DataFrame does not contain a 'value_creation' column.")
-
-    # Ensure the 'value_creation' column is of the correct type
-    df = df.with_columns(
-        pl.col("value_creation").cast(pl.Float64).alias("value_creation")
-    )
-
-    industries = df["Industry"].to_list()
-    value_creation = df["value_creation"].to_list()
-
-    # Create a new DataFrame for plotting
-    plot_df = pl.DataFrame({"Industry": industries, "Value Creation": value_creation})
-
-    # Ensure Value Creation is numeric
-    plot_df = plot_df.with_columns(
-        pl.col("Value Creation").cast(pl.Float64).alias("Value Creation")
-    )
-
-    # Create the boxplot
-    plt.figure(figsize=(12, 6))
+    # Create boxplot with 'Industry' assigned to hue and disable legend
     sns.boxplot(
-        data=plot_df.to_pandas(),  # Convert to pandas for seaborn
         x="Industry",
-        y="Value Creation",
+        y="value_creation",
+        data=df_pandas,
         hue="Industry",
-        palette="Spectral",
+        palette="coolwarm",
         legend=False,
     )
-    plt.title("Value Creation in $ by Industry")
-    plt.xlabel("Industry")
-    plt.ylabel("Value Creation (in billions)")
-    plt.xticks(rotation=45)
+
+    plt.xticks(rotation=45, ha="right")
+    plt.title("Value Creation by Industry")
+
     plt.tight_layout()
-
+    plt.show()
     # Save the plot
-    plt.savefig(os.path.join(save_directory, "value_creation_boxplot.png"))
-
-    # Display the plot
-    plt.show()  # Add this line to display the plot interactively
+    file_path = os.path.join(save_directory, "value_creation_by_industry.png")
+    plt.savefig(file_path)
+    plt.close()
 
 
 # Call the functions to load and process the data
