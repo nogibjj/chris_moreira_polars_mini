@@ -5,7 +5,6 @@ from lib import (
     calculate_mean,
     calculate_median_value_creation,
     calculate_std_value_creation,
-    plot_value_creation_by_industry,
 )
 
 
@@ -13,7 +12,7 @@ def test_dataset_import():
     """Test that the dataset is loaded without nulls."""
     path = "test_data/unicorn_companies.csv"
     df = dataset_import(path)
-    assert df.null_count().sum() == 0  # Check for null values
+    assert df.null_count().sum(axis=1).to_numpy()[0] == 0  # Check for null values
 
 
 def test_calculate_mean():
