@@ -13,7 +13,7 @@ def test_dataset_import():
     """Test that the dataset is loaded without nulls."""
     path = "test_data/unicorn_companies.csv"
     df = dataset_import(path)
-    assert df.null_count().sum().to_numpy()[0] == 0  # Check for null values
+    assert df.null_count().sum().sum() == 0  # Correctly check for null values
 
 
 def test_calculate_mean():
